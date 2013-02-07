@@ -1,0 +1,21 @@
+SERVER: >>> Logging into irc.freenode.net as wilornelas <<<
+MYMSG: wilornelas>Hey guys, In my c sharp code, how can I assign a game object which is in the scene using only code. I dont want to drag that object on a public variable.
+PUBLIC: sware> Resources.Load()
+SERVER: >>> Lastair has left <<<
+PUBLIC: wilornel> Resources.Load(cube1); ? where cube1 would be the name of a cube in the game?
+PUBLIC: sware> are you trying to create a new one
+PUBLIC: wilornel> no
+PUBLIC: wilornel> exactly
+PUBLIC: wilornel> I dont want to
+PUBLIC: sware> what are you trying to do exactly
+PUBLIC: wilornel> Im trying to use class interaction
+PUBLIC: wilornel> but the only way of having a class is to put it on an object
+PUBLIC: wilornel> so I want to select that object, select it's class, then execute a method in the class
+PUBLIC: sware> whateverobject.GetComponent<T>().DoSomething();
+PUBLIC: sware> where T is the script type
+PUBLIC: wilornel> what do you mean script type? It's a clas
+PUBLIC: wilornel> s
+PUBLIC: danielbrauer> wilornel
+PUBLIC: wilornel> daniel
+SERVER: >>> rebb has left <<<
+PUBLIC: danielbrauer> http
