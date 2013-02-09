@@ -10,10 +10,10 @@ public class AnimeateExample : MonoBehaviour
 	void Update()
 	{
 		int totalTiles = tilesX*tilesY;
-		int idx = (int)(Time.time*animrate)%(totalTiles);
+		int idx = (int)(Time.time*5)%(totalTiles);
 		int x = idx%tilesX;
-		int y = (int)(((float)idx)/tilesX);
-		
+		int y = ((int)(((float)idx)/tilesX));
+		y = tilesY - y - 1;
 		
 		renderer.material.SetTextureScale("_MainTex", new Vector2(1f/tilesX, 1f/tilesY));
 		renderer.material.SetTextureOffset("_MainTex", new Vector2(((float)x)/tilesX, ((float)y)/tilesY));
