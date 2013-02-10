@@ -24,7 +24,7 @@ public class Manager : MonoBehaviour{
 	void OnGUI(){
 		Event e = Event.current;
 		if(e.isKey && e.type == EventType.KeyDown){
-			if(e.keyCode == KeyCode.RightArrow || e.keyCode == KeyCode.LeftArrow ){
+			if(e.keyCode == KeyCode.RightArrow || e.keyCode == KeyCode.LeftArrow || e.keyCode == KeyCode.UpArrow){
 				arrow = e.keyCode; // setting the arrow which is being pressed
 			}
 		}

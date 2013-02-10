@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class Character : MonoBehaviour {
 	
-	private float speed = 0.2F;
+	public float speed = 0.2F;
+	
 	private Texture image;
 	private bool stateCanChange = true;
 	private bool resetIdx = false; 	// this boolean will reset the sprite's count when true. 
@@ -14,6 +15,7 @@ public class Character : MonoBehaviour {
 	
 	private readonly int[] STANDING = {0, 0, 2};
 	private readonly int[] WALKING = {1, 0, 2};
+	private readonly int[] JUMPING = {2, 0, 2};
 	Dictionary<KeyCode, int[]> states;
 	
 	public float animrate = 6f;
@@ -28,12 +30,15 @@ public class Character : MonoBehaviour {
 		states = new Dictionary<KeyCode, int[]>(){
 			{KeyCode.RightArrow, WALKING},
 			{KeyCode.LeftArrow, WALKING},
-			{KeyCode.None, STANDING}
+			{KeyCode.None, STANDING},
+			{KeyCode.UpArrow, JUMPING}
 		};
 		this.state = STANDING;
 	}
 	
 	void Update () {
+
+		//mover.Move (0f, -0.2f, this);
 		
 		float currentTime = Time.time;
 		int idx = (int)((currentTime-previousTime)*aniSpeed);
@@ -41,8 +46,6 @@ public class Character : MonoBehaviour {
 			idx = 0;
 			previousTime = currentTime;
 		}
-		
-		Debug.Log ("resetIdx: "+ (resetIdx));
 		
 		resetIdx = false;
 		
@@ -69,20 +72,24 @@ public class Character : MonoBehaviour {
 		if(arrow == KeyCode.LeftArrow) this.direction = 1;
 		
 		if(stateCanChange == true){
-		Debug.Log ("The key was " + arrow +", the direction:"+ direction);
 		if(states[arrow] != state){ resetIdx = true; } // if it is a different state, reset the count. Put it to zero.
 		this.state = states[arrow];
 		}else{}
 	}
 	
 	public void move(KeyCode direction){
-		float blocks = 0.0f;
+		float deltax = 0.0f;
+		float deltay = 0.0f;
 		if(direction == KeyCode.RightArrow){
-			blocks = speed;
+			deltax = speed;
 		}
 		if(direction == KeyCode.LeftArrow){
-			blocks = -speed;
+			deltax = -speed;
 		}
-		mover.Move(blocks, 0, this);
+		if(direction == KeyCode.UpArrow){
+			deltay = speed;
+		}
+		//transform.Translate(blocks, 0f, 0f, Space.World);
+		mover.Move(deltax, deltay, this);
 	}
 }
