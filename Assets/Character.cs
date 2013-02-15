@@ -39,7 +39,7 @@ public class Character : MonoBehaviour {
 	void Update () {
 
 		//mover.Move (0f, -0.2f, this);
-		
+		mover.Move (0f, -0.1f, this);
 		float currentTime = Time.time;
 		int idx = (int)((currentTime-previousTime)*aniSpeed);
 		if(resetIdx==true){
