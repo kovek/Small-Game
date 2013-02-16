@@ -41,7 +41,7 @@ public static class mover{
 				xaxis = hitx.distance - distance;
 				//xaxis = (float)(xaxis - (width /2));
 				xaxis = negative * xaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		if(Physics.Raycast(rayx1, out hitx1) == true){
@@ -50,7 +50,7 @@ public static class mover{
 				xaxis = hitx1.distance - distance;
 				//xaxis = (float)(xaxis - (width /2));
 				xaxis = negative * xaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		if(Physics.Raycast(rayx2, out hitx2) == true){
@@ -59,7 +59,7 @@ public static class mover{
 				xaxis = hitx2.distance - distance;
 				//xaxis = (float)(xaxis - (width /2));
 				xaxis = negative * xaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		
@@ -78,7 +78,7 @@ public static class mover{
 				yaxis = hity.distance;
 				yaxis = (float)(yaxis - (height/2));
 				yaxis = negative * yaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		if(Physics.Raycast(rayy1, out hity1) == true){
@@ -87,7 +87,7 @@ public static class mover{
 				yaxis = hity1.distance;
 				yaxis = (float)(yaxis - (height/2));
 				yaxis = negative * yaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
@@ -96,7 +96,7 @@ public static class mover{
 				yaxis = hity2.distance;
 				yaxis = (float)(yaxis - (height/2));
 				yaxis = negative * yaxis;
-				Debug.Log ("bump!");
+				//Debug.Log ("bump!");
 			}
 		}
 		

@@ -47,6 +47,7 @@
      <Compile Include="Assets\AnimeateExample.cs" />
      <Compile Include="Assets\Character.cs" />
      <Compile Include="Assets\Manager.cs" />
+     <Compile Include="Assets\MyObject.cs" />
      <Compile Include="Assets\mover.cs" />
      <Compile Include="Assets\rotate.cs" />
      <None Include="Assets\unityIRC\Editor\ReadMe.txt" />
