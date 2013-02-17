@@ -10,6 +10,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 	private float GRAVITY = 0.02f;
 	private bool pressingJump = false;
 	private bool pressingWalk = false;
+	private KeyCode pressingleftright = KeyCode.None;
 	private int jumpClock = 0;
 	private int[] state;
 	private readonly int[] STANDING = {0, 0, 2};
@@ -67,7 +68,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 				// standing
 				state = STANDING;
 			}
-			if(tempState == state){ resetIdx = true;}
+			if(tempState != state){ resetIdx = true;}
 			else{ resetIdx = false; } // if the state is different,
 													// we will start back at the beginning
 													// of the state
@@ -102,6 +103,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 			}
 			if(keyStroke == KeyCode.LeftArrow || keyStroke == KeyCode.RightArrow){
 				pressingWalk = true;
+				pressingleftright = keyStroke;
 				if(keyStroke == KeyCode.LeftArrow){
 					direction = -1;
 				}
@@ -113,7 +115,6 @@ public class Character : MonoBehaviour, controllable, moveable {
 				
 			}
 		}else if(state == "released"){
-			Debug.Log (keyStroke);
 			if(keyStroke == KeyCode.UpArrow){
 				if(isOnAir() || isOnFloor()){
 					pressingJump = false;
@@ -124,7 +125,10 @@ public class Character : MonoBehaviour, controllable, moveable {
 				}
 			}
 			if(keyStroke == KeyCode.LeftArrow || keyStroke == KeyCode.RightArrow){
-				pressingWalk = false;
+				if(keyStroke == pressingleftright){
+					pressingWalk = false;
+					pressingleftright = KeyCode.None;
+				}
 			}
 		}
 	}
@@ -228,10 +232,10 @@ public class Character : MonoBehaviour, controllable, moveable {
 		float tilingX = 1f/tilesX;
 		
 		float offsetX = ((float)(state[1]+(float)x)/(float)tilesX);	
-		if(direction == 1){
+		if(direction == -1){
 			tilingX = tilingX*(-1f);
 			offsetX = ((((float)(state[1]+(float)x))-tilesX+1)/(float)tilesX);
-		}else if(direction == 0){
+		}else if(direction == 1){
 			offsetX = ((float)(state[1]+(float)x)/(float)tilesX);	
 		}
 		
