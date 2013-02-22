@@ -40,7 +40,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 		if(isOnAir ()){ // is in air?
 			if(deltay > 0){ // means the character is going up
 				state = JUMPING;
-				deltaySpeed -= GRAVITY/2;
+				//deltaySpeed -= GRAVITY/2;
 			}else{ // means he is falling or not moving on the y axis, then he must fall
 				
 				deltaySpeed = -0.02f;
@@ -191,17 +191,17 @@ public class Character : MonoBehaviour, controllable, moveable {
 		RaycastHit hity1;
 		RaycastHit hity2;
 		if(Physics.Raycast(rayy, out hity) == true){
-			if(hity.distance - 0.000001 <= (float)(height/2) ){
+			if(hity.distance - 0.000001 <= (float)(height/2) && hity.collider.tag == "solid"){
 				output = false;
 			}
 		}
 		if(Physics.Raycast(rayy1, out hity1) == true){
-			if(hity1.distance - 0.000001 <= (float)(height/2) ){
+			if(hity1.distance - 0.000001 <= (float)(height/2) && hity1.collider.tag == "solid"){
 				output = false;
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
-			if(hity2.distance - 0.000001 <= (float)(height/2) ){
+			if(hity2.distance - 0.000001 <= (float)(height/2) && hity2.collider.tag == "solid"){
 				output = false;
 			}
 		}
