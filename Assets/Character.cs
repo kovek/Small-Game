@@ -40,9 +40,8 @@ public class Character : MonoBehaviour, controllable, moveable {
 		if(isOnAir ()){ // is in air?
 			if(deltay > 0){ // means the character is going up
 				state = JUMPING;
-				//deltaySpeed -= GRAVITY/2;
+				deltaySpeed -= GRAVITY/2;
 			}else{ // means he is falling or not moving on the y axis, then he must fall
-				
 				deltaySpeed = -0.02f;
 			}
 		}
@@ -181,9 +180,8 @@ public class Character : MonoBehaviour, controllable, moveable {
 	}
 	
 	public bool isOnAir(){
-		bool output = true;
-		float width = ((BoxCollider)this.collider).size.x;
-		float height = ((BoxCollider)this.collider).size.z;
+		float width = ((CharacterController)this.collider).radius;
+		float height = ((CharacterController)this.collider).radius;
 		Ray rayy  = new Ray(this.transform.position, -1*Vector2.up);
 		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1*Vector2.up);
 		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1*Vector2.up);
@@ -191,22 +189,25 @@ public class Character : MonoBehaviour, controllable, moveable {
 		RaycastHit hity1;
 		RaycastHit hity2;
 		if(Physics.Raycast(rayy, out hity) == true){
-			if(hity.distance - 0.000001 <= (float)(height/2) && hity.collider.tag == "solid"){
-				output = false;
+			Debug.DrawLine(rayy.origin, hity.point, Color.red);
+			if(hity.distance - 0.01f <= (float)(height) && hity.collider.tag == "solid"){
+				return false;
+			}else{
+				Debug.Log ((hity.distance <= height));
 			}
-		}
+		}/*
 		if(Physics.Raycast(rayy1, out hity1) == true){
-			if(hity1.distance - 0.000001 <= (float)(height/2) && hity1.collider.tag == "solid"){
-				output = false;
+			if(hity1.distance - 0.01f <= (float)(height) && hity1.collider.tag == "solid"){
+				return false;
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
-			if(hity2.distance - 0.000001 <= (float)(height/2) && hity2.collider.tag == "solid"){
-				output = false;
+			if(hity2.distance - 0.01f <= (float)(height) && hity2.collider.tag == "solid"){
+				return false;
 			}
-		}
+		}*/
 		//if(output){ Debug.Vector3.zero, Vector3(1, 0, 0), Color.red }
-		return output;
+		return true;
 	}
 	
 	
