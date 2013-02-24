@@ -1,27 +1,13 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\mover.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Character.cs">
     <Files>
-      <File FileName="Assets\mover.cs" Line="26" Column="13" />
-      <File FileName="Assets\Character.cs" Line="184" Column="15" />
-      <File FileName="Assets\Manager.cs" Line="27" Column="5" />
+      <File FileName="Assets\Character.cs" Line="191" Column="27" />
+      <File FileName="Assets\mover.cs" Line="31" Column="24" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="62" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="82" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="77" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="79" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="160" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="161" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="193" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="194" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="200" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="205" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="201" />
-      <Breakpoint file="C:\Users\Kevin\Documents\New Unity Project 1\Assets\Character.cs" line="206" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

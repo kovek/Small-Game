@@ -1,0 +1,3 @@
+-skin width of CharacterController must be 0.2
+-Actually, the previous statement just so that the character does not stick to the ground when jumping,
+turns out this problem was caused by isOnAir(), if(hity.distance + __0.5f_problemsolver_ <= (float)(height) && hity.collider.tag == "solid"){ 

@@ -39,7 +39,6 @@ public class Character : MonoBehaviour, controllable, moveable {
 		deltay += deltaySpeed;
 		if(isOnAir ()){ // is in air?
 			if(deltay > 0){ // means the character is going up
-				state = JUMPING;
 				deltaySpeed -= GRAVITY/2;
 			}else{ // means he is falling or not moving on the y axis, then he must fall
 				deltaySpeed = -0.02f;
@@ -52,12 +51,12 @@ public class Character : MonoBehaviour, controllable, moveable {
 			if(isOnLadder ()){
 				// return something about ladder, same for up and down
 			}
-			if(false){ //  later or replace this by ACTION
+			if(false){ //  later on replace this by ACTION
 				
 			}
 			if(deltay > 0){
 				// going up sprite
-			}else if(deltay < 0 || (deltay == 0 && isOnAir())){
+			}else if( (deltay < 0 && isOnAir () ) || (deltay == 0 && isOnAir())){
 				// going down sprite
 				state = JUMPING;
 			}else if(deltax != 0){
@@ -75,14 +74,18 @@ public class Character : MonoBehaviour, controllable, moveable {
 		
 		setSpriteImage();
 		translate (deltax, deltay);
+		if(deltay > 0.05f){
+			Debug.Log("you tried to jump");
+		}
 		
 		if(isOnFloor ()){
 			jumpClock = 0;
-			//Debug.Log (deltay +">>"+pressingJump);
+			Debug.Log (deltay +">>"+pressingJump);
 			if(deltay < 0 && pressingJump == true){ // means he's been falling lately
 				jumpHolding = true;
 				pressingJump = false;
 			}
+			if(deltay > 0.05f ){Debug.Log ("muhahaha"); }
 			deltay = 0.0f;
 			deltaySpeed = 0.0f;
 		}
@@ -136,16 +139,11 @@ public class Character : MonoBehaviour, controllable, moveable {
 		if(jumpHolding == false){
 			
 			if(isOnFloor ()){
-				deltaySpeed += 0.09f;
+				Debug.Log ("jumped");
+				deltaySpeed += 0.13f;
 				jumpClock++;
 			}
-			/*
-			if(isOnAir () && jumpClock < 7 ){
-				Debug.Log ("increasing" + deltaySpeed);
-				jumpClock++;
-				deltaySpeed += 0.025f/jumpClock;
-			}
-			*/
+
 			
 			if(isOnFloor() || (jumpClock > 0 && jumpClock < 14) ){
 				jumpClock ++;
@@ -181,7 +179,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 	
 	public bool isOnAir(){
 		float width = ((CharacterController)this.collider).radius;
-		float height = ((CharacterController)this.collider).radius;
+		float height = (((CharacterController)this.collider).radius*2f+((CharacterController)this.collider).height)/2f;
 		Ray rayy  = new Ray(this.transform.position, -1*Vector2.up);
 		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1*Vector2.up);
 		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1*Vector2.up);
@@ -190,28 +188,14 @@ public class Character : MonoBehaviour, controllable, moveable {
 		RaycastHit hity2;
 		if(Physics.Raycast(rayy, out hity) == true){
 			Debug.DrawLine(rayy.origin, hity.point, Color.red);
-			if(hity.distance - 0.01f <= (float)(height) && hity.collider.tag == "solid"){
+			if(hity.distance + 0.5f <= (float)(height) && hity.collider.tag == "solid"){ // the distance is very small
 				return false;
 			}else{
 				Debug.Log ((hity.distance <= height));
 			}
-		}/*
-		if(Physics.Raycast(rayy1, out hity1) == true){
-			if(hity1.distance - 0.01f <= (float)(height) && hity1.collider.tag == "solid"){
-				return false;
-			}
 		}
-		if(Physics.Raycast(rayy2, out hity2) == true){
-			if(hity2.distance - 0.01f <= (float)(height) && hity2.collider.tag == "solid"){
-				return false;
-			}
-		}*/
-		//if(output){ Debug.Vector3.zero, Vector3(1, 0, 0), Color.red }
 		return true;
 	}
-	
-	
-	
 	
 	// SPRITE VARIABLES
 	int tilesX  = 3;
