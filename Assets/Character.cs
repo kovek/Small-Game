@@ -20,10 +20,18 @@ public class Character : MonoBehaviour, controllable, moveable {
 	public float SPEED = 0.5f;
 	private int direction;
 	private bool jumpHolding = false;
+	public BoxCollider rectangleBox;
 	
 	// Use this for initialization
 	void Start () {
-	
+		//rectangleBox = new BoxCollider();
+		(this.gameObject).AddComponent("BoxCollider");
+		float widthOfChar = ((CharacterController)this.GetComponent<CharacterController>()).radius*2f;
+		Vector3 sizeOfBox = new Vector3( widthOfChar, widthOfChar * (this.transform.localScale.y/this.transform.localScale.x), 0.0f );
+		((BoxCollider)this.GetComponent<BoxCollider>()).isTrigger = true;
+		Debug.Log ("Is is trigger?: " + ((BoxCollider)this.GetComponent<BoxCollider>()).isTrigger);
+		//rectangleBox.size = sizeOfBox;
+		//rectangleBox.center = Vector3.zero;
 	}
 	
 	// Update is called once per frame
