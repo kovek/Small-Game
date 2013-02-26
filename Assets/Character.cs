@@ -24,14 +24,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 	
 	// Use this for initialization
 	void Start () {
-		//rectangleBox = new BoxCollider();
-		(this.gameObject).AddComponent("BoxCollider");
-		float widthOfChar = ((CharacterController)this.GetComponent<CharacterController>()).radius*2f;
-		Vector3 sizeOfBox = new Vector3( widthOfChar, widthOfChar * (this.transform.localScale.y/this.transform.localScale.x), 0.0f );
-		((BoxCollider)this.GetComponent<BoxCollider>()).isTrigger = true;
-		Debug.Log ("Is is trigger?: " + ((BoxCollider)this.GetComponent<BoxCollider>()).isTrigger);
-		//rectangleBox.size = sizeOfBox;
-		//rectangleBox.center = Vector3.zero;
+		this.gameObject.AddComponent<BoxCollider>();
 	}
 	
 	// Update is called once per frame
@@ -88,7 +81,6 @@ public class Character : MonoBehaviour, controllable, moveable {
 		
 		if(isOnFloor ()){
 			jumpClock = 0;
-			Debug.Log (deltay +">>"+pressingJump);
 			if(deltay < 0 && pressingJump == true){ // means he's been falling lately
 				jumpHolding = true;
 				pressingJump = false;
@@ -186,22 +178,40 @@ public class Character : MonoBehaviour, controllable, moveable {
 	}
 	
 	public bool isOnAir(){
-		float width = ((CharacterController)this.collider).radius;
-		float height = (((CharacterController)this.collider).radius*2f+((CharacterController)this.collider).height)/2f;
+		float width = ((CharacterController)this.collider).radius*2f*this.transform.localScale.x;
+		float height = ((CharacterController)this.collider).radius*2f*this.transform.localScale.z;
 		Ray rayy  = new Ray(this.transform.position, -1*Vector2.up);
-		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1*Vector2.up);
-		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1*Vector2.up);
 		RaycastHit hity;
-		RaycastHit hity1;
-		RaycastHit hity2;
 		if(Physics.Raycast(rayy, out hity) == true){
 			Debug.DrawLine(rayy.origin, hity.point, Color.red);
-			if(hity.distance + 0.5f <= (float)(height) && hity.collider.tag == "solid"){ // the distance is very small
+			if(hity.distance - 0.1f <= (float)(height)/2 && hity.collider.tag == "solid"){ // the distance is very small
 				return false;
 			}else{
-				Debug.Log ((hity.distance <= height));
+				//Debug.Log ((hity.distance <= height));
 			}
 		}
+		
+		
+		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1f*Vector2.up);
+		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1f*Vector2.up);
+		RaycastHit hity1;
+		RaycastHit hity2;
+
+		if(Physics.Raycast(rayy1, out hity1) == true){
+			Debug.DrawLine(rayy1.origin, hity1.point);
+			if(hity1.distance - 0.1f <= (height/2) && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
+				return false;
+			}
+		}
+		if(Physics.Raycast(rayy2, out hity2) == true){
+			Debug.DrawLine(rayy2.origin, hity2.point);
+			if(hity2.distance - 0.1f  <= (height/2) && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
+				return false;
+			}
+		}
+		
+		
+		
 		return true;
 	}
 	

@@ -1,9 +1,9 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\mover.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Character.cs">
     <Files>
-      <File FileName="Assets\Character.cs" Line="202" Column="1" />
-      <File FileName="Assets\mover.cs" Line="74" Column="3" />
+      <File FileName="Assets\Character.cs" Line="156" Column="2" />
+      <File FileName="Assets\mover.cs" Line="46" Column="49" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

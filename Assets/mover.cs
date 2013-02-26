@@ -34,11 +34,8 @@ public static class mover{
 			}	
 		}
 		
-		
-		float width = theObject.GetComponent<BoxCollider>().size.x;
-		float height = theObject.GetComponent<BoxCollider>().size.z;// this is some really small number: wtf?
-		height = width*(theObject.transform.localScale.y/theObject.transform.localScale.x);
-		height = width;
+		float width = theObject.GetComponent<BoxCollider>().size.x*theObject.transform.localScale.x;
+		float height = width*(theObject.transform.localScale.z/theObject.transform.localScale.x);
 		
 		Ray rayx1 = new Ray(theObject.transform.position + new Vector3((float)negative*width/2, 0, 0) + new Vector3(0, (float)height/2, 0), (negative)*Vector2.right);
 		Ray rayx2 = new Ray(theObject.transform.position + new Vector3((float)negative*width/2, 0, 0) + new Vector3(0, (float)-height/2, 0), (negative)*Vector2.right);
@@ -48,7 +45,6 @@ public static class mover{
 
 		if(Physics.Raycast(rayx1, out hitx1) == true){
 			Debug.DrawLine(rayx1.origin, hitx1.point);
-			Debug.Log ("TAG>>" + Vector3.Angle(hitx1.normal, negative*Vector3.up)%90);
 			if(hitx1.distance < distance + negative*xaxis && hitx1.collider.tag == "solid" && Vector3.Angle(hitx1.normal, negative*Vector3.up)%90 < 0.0001f){
 				xaxis = hitx1.distance - distance;
 				xaxis = negative * xaxis;
@@ -56,7 +52,7 @@ public static class mover{
 		}
 		if(Physics.Raycast(rayx2, out hitx2) == true){
 			Debug.DrawLine(rayx2.origin, hitx2.point);
-			if(hitx2.distance < distance + negative*xaxis && hitx2.collider.tag == "solid" && Vector3.Angle(hitx2.normal, negative*Vector3.up)%90 < 0.0001f){
+			if(hitx2.distance < distance + negative*xaxis && hitx2.collider.tag == "solid" && Vector3.Angle(hitx2.normal, negative*Vector3.up)%90 < 0.0001f && ((Character)theObject).isOnAir()){
 				xaxis = hitx2.distance - distance;
 				xaxis = negative * xaxis;
 			}
@@ -65,7 +61,7 @@ public static class mover{
 		
 		negative = 1;
 		if(yaxis < 0){ negative = -1;}
-
+		
 		Ray rayy1 = new Ray(theObject.transform.position+ new Vector3((float)width/2, 0, 0), negative*Vector2.up);
 		Ray rayy2 = new Ray(theObject.transform.position+ new Vector3((float)-width/2, 0, 0), negative*Vector2.up);
 
@@ -74,7 +70,7 @@ public static class mover{
 
 		if(Physics.Raycast(rayy1, out hity1) == true){
 			Debug.DrawLine(rayy1.origin, hity1.point);
-			if(hity1.distance + 0.8f < (height/2) + negative*yaxis && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, negative*Vector3.right)%90 < 0.0001f){
+			if(hity1.distance < (height/2) + negative*yaxis && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, negative*Vector3.right)%90 < 0.0001f){
 				yaxis = hity1.distance;
 				yaxis = (float)(yaxis - (height/2));
 				yaxis = negative * yaxis;
@@ -82,7 +78,7 @@ public static class mover{
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
 			Debug.DrawLine(rayy2.origin, hity2.point);
-			if(hity2.distance + 0.8f < (height/2) + negative*yaxis && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, negative*Vector3.right)%90 < 0.0001f){
+			if(hity2.distance < (height/2) + negative*yaxis && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, negative*Vector3.right)%90 < 0.0001f){
 				yaxis = hity2.distance;
 				yaxis = (float)(yaxis - (height/2));
 				yaxis = negative * yaxis;
