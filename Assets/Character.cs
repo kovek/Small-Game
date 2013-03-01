@@ -198,11 +198,11 @@ public class Character : MonoBehaviour, controllable, moveable {
 		Ray rayy  = new Ray(this.transform.position, -1*Vector2.up);
 		RaycastHit hity;
 		if(Physics.Raycast(rayy, out hity) == true){
-			Debug.DrawLine(rayy.origin, hity.point, Color.red);
-			if(hity.distance - 0.4f <= (float)(height)/2 && hity.collider.tag == "solid"){ // the distance is very small
+			//Debug.DrawLine(rayy.origin, hity.point, Color.red);
+			if(hity.distance - 0.4f <= (float)(height)/2 && (hity.distance > height/2 && (Vector3.Angle(hity.normal, Vector3.up)%90f > 2.0001f )  ) && (hity.collider.tag == "solid" )){ // the distance is very small
 				return false;
 			}else{
-				//Debug.Log ((hity.distance <= height));
+
 			}
 		}
 		
@@ -213,14 +213,14 @@ public class Character : MonoBehaviour, controllable, moveable {
 		RaycastHit hity2;
 
 		if(Physics.Raycast(rayy1, out hity1) == true){
-			Debug.DrawLine(rayy1.origin, hity1.point);
-			if(hity1.distance - 0.3f <= (height/2) && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
+			//Debug.DrawLine(rayy1.origin, hity1.point);
+			if(hity1.distance - 0.3f <= (height/2) && (hity1.distance > height/2 && Vector3.Angle(hity1.normal, Vector3.up)%90 < 0.0001f)&& ( hity1.collider.tag == "solid"  || (hity1.collider.tag == "solidsoft") ) && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
 				return false;
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
-			Debug.DrawLine(rayy2.origin, hity2.point);
-			if(hity2.distance - 0.3f  <= (height/2) && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
+			//Debug.DrawLine(rayy2.origin, hity2.point);
+			if(hity2.distance - 0.3f  <= (height/2) && (hity2.distance > height/2 && Vector3.Angle(hity2.normal, Vector3.up)%90 < 0.0001f) && ( hity2.collider.tag == "solid"  || (hity2.collider.tag == "solidsoft") ) && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
 				return false;
 			}
 		}
