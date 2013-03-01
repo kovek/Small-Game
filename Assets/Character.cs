@@ -24,7 +24,14 @@ public class Character : MonoBehaviour, controllable, moveable {
 	
 	// Use this for initialization
 	void Start () {
+		//this.gameObject.AddComponent<CharacterController>();
 		this.gameObject.AddComponent<BoxCollider>();
+		this.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+		if(this.tag == "monster"){
+		//	this.GetComponent<CharacterController>().isTrigger = true;
+			//this.GetComponent<CharacterController>().enabled = false;
+			//this.GetComponent<CharacterController>().radius = 0f;
+		}
 	}
 	
 	// Update is called once per frame
@@ -86,6 +93,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 				pressingJump = false;
 			}
 			if(deltay > 0.05f ){Debug.Log ("muhahaha"); }
+			
 			deltay = 0.0f;
 			deltaySpeed = 0.0f;
 		}
@@ -177,6 +185,13 @@ public class Character : MonoBehaviour, controllable, moveable {
 		mover.Move (x, y, this);
 	}
 	
+	public void OnTriggerEnter(Collider collider){
+		if(collider.tag == "monster" && this.tag == "player"){
+			Debug.Log ("OUCH!!!");
+			translate (8.0f, 4.0f);
+		}
+	}
+	
 	public bool isOnAir(){
 		float width = ((CharacterController)this.collider).radius*2f*this.transform.localScale.x;
 		float height = ((CharacterController)this.collider).radius*2f*this.transform.localScale.z;
@@ -184,7 +199,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 		RaycastHit hity;
 		if(Physics.Raycast(rayy, out hity) == true){
 			Debug.DrawLine(rayy.origin, hity.point, Color.red);
-			if(hity.distance - 0.1f <= (float)(height)/2 && hity.collider.tag == "solid"){ // the distance is very small
+			if(hity.distance - 0.4f <= (float)(height)/2 && hity.collider.tag == "solid"){ // the distance is very small
 				return false;
 			}else{
 				//Debug.Log ((hity.distance <= height));
@@ -199,25 +214,27 @@ public class Character : MonoBehaviour, controllable, moveable {
 
 		if(Physics.Raycast(rayy1, out hity1) == true){
 			Debug.DrawLine(rayy1.origin, hity1.point);
-			if(hity1.distance - 0.1f <= (height/2) && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
+			if(hity1.distance - 0.3f <= (height/2) && hity1.collider.tag == "solid" && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
 				return false;
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
 			Debug.DrawLine(rayy2.origin, hity2.point);
-			if(hity2.distance - 0.1f  <= (height/2) && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
+			if(hity2.distance - 0.3f  <= (height/2) && hity2.collider.tag == "solid" && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
 				return false;
 			}
 		}
 		
-		
+		if(this.GetComponent<CharacterController>().isGrounded){
+			return false;
+		}
 		
 		return true;
 	}
 	
 	// SPRITE VARIABLES
-	int tilesX  = 3;
-	int tilesY = 3;
+	public int tilesX  = 3;
+	public int tilesY = 3;
 	float previousTime;
 	float aniSpeed = 1.5f;
 	bool resetIdx = false;
