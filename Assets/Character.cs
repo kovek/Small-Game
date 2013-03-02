@@ -20,10 +20,18 @@ public class Character : MonoBehaviour, controllable, moveable {
 	public float SPEED = 0.5f;
 	private int direction;
 	private bool jumpHolding = false;
+	public BoxCollider rectangleBox;
 	
 	// Use this for initialization
 	void Start () {
-	
+		//this.gameObject.AddComponent<CharacterController>();
+		this.gameObject.AddComponent<BoxCollider>();
+		this.gameObject.GetComponent<BoxCollider>().isTrigger = true;
+		if(this.tag == "monster"){
+		//	this.GetComponent<CharacterController>().isTrigger = true;
+			//this.GetComponent<CharacterController>().enabled = false;
+			//this.GetComponent<CharacterController>().radius = 0f;
+		}
 	}
 	
 	// Update is called once per frame
@@ -39,10 +47,8 @@ public class Character : MonoBehaviour, controllable, moveable {
 		deltay += deltaySpeed;
 		if(isOnAir ()){ // is in air?
 			if(deltay > 0){ // means the character is going up
-				state = JUMPING;
-				//deltaySpeed -= GRAVITY/2;
+				deltaySpeed -= GRAVITY/2;
 			}else{ // means he is falling or not moving on the y axis, then he must fall
-				
 				deltaySpeed = -0.02f;
 			}
 		}
@@ -53,12 +59,12 @@ public class Character : MonoBehaviour, controllable, moveable {
 			if(isOnLadder ()){
 				// return something about ladder, same for up and down
 			}
-			if(false){ //  later or replace this by ACTION
+			if(false){ //  later on replace this by ACTION
 				
 			}
 			if(deltay > 0){
 				// going up sprite
-			}else if(deltay < 0 || (deltay == 0 && isOnAir())){
+			}else if( (deltay < 0 && isOnAir () ) || (deltay == 0 && isOnAir())){
 				// going down sprite
 				state = JUMPING;
 			}else if(deltax != 0){
@@ -79,13 +85,13 @@ public class Character : MonoBehaviour, controllable, moveable {
 		
 		if(isOnFloor ()){
 			jumpClock = 0;
-			//Debug.Log (deltay +">>"+pressingJump);
-			if(deltay < 0 && pressingJump == true){ // means he's been falling lately
+			if(deltay != 0f && pressingJump == true){ // means he's been falling lately
 				jumpHolding = true;
 				pressingJump = false;
+			}else{
+				deltay = 0.0f;
+				deltaySpeed = 0.0f;
 			}
-			deltay = 0.0f;
-			deltaySpeed = 0.0f;
 		}
 	}
 	public void letMeKnow(KeyCode keyStroke, string state){
@@ -137,16 +143,12 @@ public class Character : MonoBehaviour, controllable, moveable {
 		if(jumpHolding == false){
 			
 			if(isOnFloor ()){
-				deltaySpeed += 0.09f;
+				Debug.Log ("jumped");
+				translate (0.0f, 0.33f);
+				deltaySpeed += 0.13f;
 				jumpClock++;
 			}
-			/*
-			if(isOnAir () && jumpClock < 7 ){
-				Debug.Log ("increasing" + deltaySpeed);
-				jumpClock++;
-				deltaySpeed += 0.025f/jumpClock;
-			}
-			*/
+
 			
 			if(isOnFloor() || (jumpClock > 0 && jumpClock < 14) ){
 				jumpClock ++;
@@ -180,41 +182,56 @@ public class Character : MonoBehaviour, controllable, moveable {
 		mover.Move (x, y, this);
 	}
 	
+	public void OnTriggerEnter(Collider collider){
+		if(collider.tag == "monster" && this.tag == "player"){
+			Debug.Log ("OUCH!!!");
+			translate (8.0f, 4.0f);
+		}
+	}
+	
 	public bool isOnAir(){
-		bool output = true;
-		float width = ((BoxCollider)this.collider).size.x;
-		float height = ((BoxCollider)this.collider).size.z;
+		float width = ((CharacterController)this.collider).radius*2f*this.transform.localScale.x;
+		float height = ((CharacterController)this.collider).radius*2f*this.transform.localScale.z;
 		Ray rayy  = new Ray(this.transform.position, -1*Vector2.up);
-		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1*Vector2.up);
-		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1*Vector2.up);
 		RaycastHit hity;
-		RaycastHit hity1;
-		RaycastHit hity2;
 		if(Physics.Raycast(rayy, out hity) == true){
-			if(hity.distance - 0.000001 <= (float)(height/2) && hity.collider.tag == "solid"){
-				output = false;
+			//Debug.DrawLine(rayy.origin, hity.point, Color.red);
+			if(hity.distance - 0.4f <= (float)(height)/2 && (hity.distance > height/2 && (Vector3.Angle(hity.normal, Vector3.up)%90f > 2.0001f )  ) && (hity.collider.tag == "solid" )){ // the distance is very small
+				return false;
+			}else{
+
 			}
 		}
+		
+		
+		Ray rayy1 = new Ray(this.transform.position+ new Vector3((float)width/2, 0, 0), -1f*Vector2.up);
+		Ray rayy2 = new Ray(this.transform.position+ new Vector3((float)-width/2, 0, 0), -1f*Vector2.up);
+		RaycastHit hity1;
+		RaycastHit hity2;
+
 		if(Physics.Raycast(rayy1, out hity1) == true){
-			if(hity1.distance - 0.000001 <= (float)(height/2) && hity1.collider.tag == "solid"){
-				output = false;
+			//Debug.DrawLine(rayy1.origin, hity1.point);
+			if(hity1.distance - 0.3f <= (height/2) && (hity1.distance > height/2 && Vector3.Angle(hity1.normal, Vector3.up)%90 < 0.0001f)&& ( hity1.collider.tag == "solid"  || (hity1.collider.tag == "solidsoft") ) && Vector3.Angle(hity1.normal, Vector3.right)%90 < 0.0001f){
+				return false;
 			}
 		}
 		if(Physics.Raycast(rayy2, out hity2) == true){
-			if(hity2.distance - 0.000001 <= (float)(height/2) && hity2.collider.tag == "solid"){
-				output = false;
+			//Debug.DrawLine(rayy2.origin, hity2.point);
+			if(hity2.distance - 0.3f  <= (height/2) && (hity2.distance > height/2 && Vector3.Angle(hity2.normal, Vector3.up)%90 < 0.0001f) && ( hity2.collider.tag == "solid"  || (hity2.collider.tag == "solidsoft") ) && Vector3.Angle(hity2.normal, Vector3.right)%90 < 0.0001f){
+				return false;
 			}
 		}
-		//if(output){ Debug.Vector3.zero, Vector3(1, 0, 0), Color.red }
-		return output;
+		
+		if(this.GetComponent<CharacterController>().isGrounded){
+			return false;
+		}
+		
+		return true;
 	}
 	
-	
-	
-	
 	// SPRITE VARIABLES
-	int tilesX  = 3;
-	int tilesY = 3;
+	public int tilesX  = 3;
+	public int tilesY = 3;
 	float previousTime;
 	float aniSpeed = 1.5f;
 	bool resetIdx = false;

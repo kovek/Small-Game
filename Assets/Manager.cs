@@ -4,12 +4,13 @@ using System.Collections;
 public class Manager : MonoBehaviour{
 	
 	public Character player;
+	public Character monster;
 	private string world = "open";
 	//private KeyCode being
 
 	
 	void Start(){
-		
+		Physics.IgnoreCollision(monster.GetComponent<Character>().collider, player.GetComponent<Character>().collider,true);
 	}
 
 	void Update(){
