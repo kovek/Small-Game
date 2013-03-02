@@ -82,20 +82,16 @@ public class Character : MonoBehaviour, controllable, moveable {
 		
 		setSpriteImage();
 		translate (deltax, deltay);
-		if(deltay > 0.05f){
-			Debug.Log("you tried to jump");
-		}
 		
 		if(isOnFloor ()){
 			jumpClock = 0;
-			if(deltay < 0 && pressingJump == true){ // means he's been falling lately
+			if(deltay != 0f && pressingJump == true){ // means he's been falling lately
 				jumpHolding = true;
 				pressingJump = false;
+			}else{
+				deltay = 0.0f;
+				deltaySpeed = 0.0f;
 			}
-			if(deltay > 0.05f ){Debug.Log ("muhahaha"); }
-			
-			deltay = 0.0f;
-			deltaySpeed = 0.0f;
 		}
 	}
 	public void letMeKnow(KeyCode keyStroke, string state){
@@ -148,6 +144,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 			
 			if(isOnFloor ()){
 				Debug.Log ("jumped");
+				translate (0.0f, 0.33f);
 				deltaySpeed += 0.13f;
 				jumpClock++;
 			}
