@@ -45,15 +45,7 @@ public static class mover{
 		
 		RaycastHit hitx1;
 		RaycastHit hitx2;
-		if(Physics.Raycast(rayx, out hitx) == true){
-			Debug.DrawLine(rayx.origin, hitx.point);
-			if(hitx.distance <  distance + negative*xaxis && hitx.collider.tag == "solid"){
-				xaxis = hitx.distance - distance;
-				//xaxis = (float)(xaxis - (width /2));
-				xaxis = negative * xaxis;
-				//Debug.Log ("bump!");
-			}
-		}
+
 		if(Physics.Raycast(rayx1, out hitx1) == true){
 			Debug.DrawLine(rayx1.origin, hitx1.point);
 			if(hitx1.distance < distance + negative*xaxis && hitx1.collider.tag == "solid"){
