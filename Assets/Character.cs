@@ -21,6 +21,8 @@ public class Character : MonoBehaviour, controllable, moveable {
 	private int direction;
 	private bool jumpHolding = false;
 	public BoxCollider rectangleBox;
+	public Camera camera1;
+	public float axeSwingDistance = 4.0f;
 	
 	// Use this for initialization
 	void Start () {
@@ -96,7 +98,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 	}
 	public void letMeKnow(KeyCode keyStroke, string state){
 		if(state == "pressed"){
-			if(keyStroke == KeyCode.UpArrow){
+			if(keyStroke == KeyCode.W){
 				if(isOnFloor()){
 					pressingJump = true;
 				}
@@ -107,21 +109,55 @@ public class Character : MonoBehaviour, controllable, moveable {
 					// climbing up the ladder
 				}
 			}
-			if(keyStroke == KeyCode.LeftArrow || keyStroke == KeyCode.RightArrow){
+			if(keyStroke == KeyCode.A || keyStroke == KeyCode.D){
 				pressingWalk = true;
 				pressingleftright = keyStroke;
-				if(keyStroke == KeyCode.LeftArrow){
+				if(keyStroke == KeyCode.A){
 					direction = -1;
 				}
 				else{
 					direction = 1;
 				}
 			}
+			if(keyStroke == KeyCode.Mouse0){
+				// flashlight and shiet
+				Debug.Log ("mouse0 clicked");
+				Vector3 mousePos = Input.mousePosition;
+				mousePos.z += 32.0f;
+				Vector3 clickedPosition = Camera.main.ScreenToWorldPoint(mousePos);
+				clickedPosition.z = 4.0f;
+				Debug.DrawRay(this.transform.position, clickedPosition, Color.red);
+				Vector3 delta = clickedPosition - this.transform.position;
+				if(Mathf.Abs(delta.y) > Mathf.Abs(delta.x) && delta.y > 0f){
+					//up
+				}else if(Mathf.Abs(delta.x) > Mathf.Abs(delta.y) && delta.x > 0f){
+					Debug.Log ("right");
+				}else if(Mathf.Abs(delta.x) > Mathf.Abs(delta.y) && delta.x < 0f){
+					// left	
+				}else if(Mathf.Abs(delta.y) > Mathf.Abs(delta.x) && delta.y < 0f){
+					// down
+				}
+			}
+			if(keyStroke == KeyCode.UpArrow){
+				// axe to the top
+			}
+			if(keyStroke == KeyCode.RightArrow){
+				 // axe to the right
+			}
+			if(keyStroke == KeyCode.LeftArrow){
+				Ray left = new Ray(this.transform.position, Vector3.right*-1);
+				RaycastHit leftHit;
+				if(Physics.Raycast(left, out leftHit) == true){
+					if(leftHit.collider.tag == "tree" && leftHit.distance <= axeSwingDistance){
+						leftHit.collider.gameObject.GetComponent<Tree>().cutted(leftHit.point);
+					}
+				}
+			}
 			if(keyStroke == KeyCode.DownArrow){
 				
 			}
 		}else if(state == "released"){
-			if(keyStroke == KeyCode.UpArrow){
+			if(keyStroke == KeyCode.W){
 				if(isOnAir() || isOnFloor()){
 					pressingJump = false;
 					jumpHolding = false;
@@ -130,7 +166,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 					// stop climbing up the ladder
 				}
 			}
-			if(keyStroke == KeyCode.LeftArrow || keyStroke == KeyCode.RightArrow){
+			if(keyStroke == KeyCode.A || keyStroke == KeyCode.D){
 				if(keyStroke == pressingleftright){
 					pressingWalk = false;
 					pressingleftright = KeyCode.None;
@@ -144,7 +180,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 			
 			if(isOnFloor ()){
 				Debug.Log ("jumped");
-				translate (0.0f, 0.33f);
+				translate (0.0f, 0.5f);
 				deltaySpeed += 0.13f;
 				jumpClock++;
 			}

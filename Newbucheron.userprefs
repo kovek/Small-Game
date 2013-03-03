@@ -1,14 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\mover.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Character.cs">
     <Files>
-      <File FileName="Assets\mover.cs" Line="69" Column="17" />
-      <File FileName="Assets\Character.cs" Line="138" Column="5" />
-      <File FileName="Assets\Manager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Character.cs" Line="151" Column="1" />
+      <File FileName="Assets\Manager.cs" Line="14" Column="22" />
+      <File FileName="Assets\mover.cs" Line="1" Column="1" />
+      <File FileName="Assets\Trunk.cs" Line="10" Column="2" />
+      <File FileName="Assets\TreeBase.cs" Line="19" Column="3" />
+      <File FileName="Assets\Tree.cs" Line="21" Column="5" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="C:\Users\Kevin\Documents\Newbucheron\Assets\Tree.cs" line="22" />
+      <Breakpoint file="C:\Users\Kevin\Documents\Newbucheron\Assets\Character.cs" line="151" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

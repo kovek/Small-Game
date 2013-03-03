@@ -48,6 +48,9 @@
      <Compile Include="Assets\Character.cs" />
      <Compile Include="Assets\Manager.cs" />
      <Compile Include="Assets\MyObject.cs" />
+     <Compile Include="Assets\Tree.cs" />
+     <Compile Include="Assets\TreeBase.cs" />
+     <Compile Include="Assets\Trunk.cs" />
      <Compile Include="Assets\constants.cs" />
      <Compile Include="Assets\mover.cs" />
      <Compile Include="Assets\rotate.cs" />
