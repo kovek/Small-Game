@@ -2,14 +2,9 @@ using UnityEngine;
 using System.Collections;
 
 public class Trunk : MonoBehaviour {
-
-	// Use this for initialization
-	void Start () {
 	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
+	// call the cutted method of the parent
+	public void cutted(Vector3 position){
+		this.transform.parent.GetComponent<Tree>().cutted(position);
 	}
 }

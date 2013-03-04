@@ -3,40 +3,50 @@ using System.Collections;
 
 public class Character : MonoBehaviour, controllable, moveable {
 	
-	bool jumping = false;
+	
+	// movement variables
 	float deltay = 0.0f;
 	float deltax = 0.0f;
 	float deltaySpeed = 0.0f;
 	private float GRAVITY = 0.02f;
+	private int direction;
+	public float SPEED = 0.5f;
+
+	// state variables
 	private bool pressingJump = false;
 	private bool pressingWalk = false;
 	private KeyCode pressingleftright = KeyCode.None;
 	private int jumpClock = 0;
+	private bool jumpHolding = false;
+	
+	// state arrays for the display/ANIMATION of the CHARACTER
 	private int[] state;
 	private readonly int[] STANDING = {0, 0, 2};
 	private readonly int[] WALKING = {1, 0, 2};
 	private readonly int[] JUMPING = {2, 0, 2};
 	private readonly int[] FALLING = {2, 0, 2};
-	public float SPEED = 0.5f;
-	private int direction;
-	private bool jumpHolding = false;
-	public BoxCollider rectangleBox;
-	public Camera camera1;
-	public float axeSwingDistance = 4.0f;
 	
-	// Use this for initialization
+	// SPRITE VARIABLES
+	public int tilesX  = 3;
+	public int tilesY = 3;
+	float previousTime;
+	float aniSpeed = 1.5f;
+	bool resetIdx = false;
+	
+	// a torso, where the object would ACTUALLY GET HIT
+	public BoxCollider rectangleBox;
+
+	// skill variables, in this case, the axe swing distance
+	public float axeSwingDistance = 10.0f;
+	
 	void Start () {
-		//this.gameObject.AddComponent<CharacterController>();
 		this.gameObject.AddComponent<BoxCollider>();
 		this.gameObject.GetComponent<BoxCollider>().isTrigger = true;
 		if(this.tag == "monster"){
-		//	this.GetComponent<CharacterController>().isTrigger = true;
-			//this.GetComponent<CharacterController>().enabled = false;
-			//this.GetComponent<CharacterController>().radius = 0f;
+
 		}
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		if(pressingJump){
 			jump ();
@@ -48,9 +58,9 @@ public class Character : MonoBehaviour, controllable, moveable {
 		}
 		deltay += deltaySpeed;
 		if(isOnAir ()){ // is in air?
-			if(deltay > 0){ // means the character is going up
+			if(deltay > 0){ // means the character is GOING UP
 				deltaySpeed -= GRAVITY/2;
-			}else{ // means he is falling or not moving on the y axis, then he must fall
+			}else{ // means he is FALLING or NOT MOVING on the y axis, then he must fall
 				deltaySpeed = -0.02f;
 			}
 		}
@@ -77,9 +87,9 @@ public class Character : MonoBehaviour, controllable, moveable {
 				state = STANDING;
 			}
 			if(tempState != state){ resetIdx = true;}
-			else{ resetIdx = false; } // if the state is different,
-													// we will start back at the beginning
-													// of the state
+			else{ resetIdx = false; } // if the state is DIFFERENT,
+										// we will start BACK AT THE BEGINNING
+										// of the state
 		}
 		
 		setSpriteImage();
@@ -96,6 +106,8 @@ public class Character : MonoBehaviour, controllable, moveable {
 			}
 		}
 	}
+	
+	// receive the keyboard/mouse INPUTS
 	public void letMeKnow(KeyCode keyStroke, string state){
 		if(state == "pressed"){
 			if(keyStroke == KeyCode.W){
@@ -126,7 +138,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 				mousePos.z += 32.0f;
 				Vector3 clickedPosition = Camera.main.ScreenToWorldPoint(mousePos);
 				clickedPosition.z = 4.0f;
-				Debug.DrawRay(this.transform.position, clickedPosition, Color.red);
+				Debug.DrawRay(this.transform.localPosition, clickedPosition, Color.red);
 				Vector3 delta = clickedPosition - this.transform.position;
 				if(Mathf.Abs(delta.y) > Mathf.Abs(delta.x) && delta.y > 0f){
 					//up
@@ -141,15 +153,19 @@ public class Character : MonoBehaviour, controllable, moveable {
 			if(keyStroke == KeyCode.UpArrow){
 				// axe to the top
 			}
-			if(keyStroke == KeyCode.RightArrow){
-				 // axe to the right
-			}
-			if(keyStroke == KeyCode.LeftArrow){
-				Ray left = new Ray(this.transform.position, Vector3.right*-1);
+			if(keyStroke == KeyCode.LeftArrow || keyStroke == KeyCode.RightArrow){
+				int negative = 1;
+				if(keyStroke == KeyCode.RightArrow){
+					negative = 1;
+				}else if(keyStroke == KeyCode.LeftArrow){
+					negative = -1;
+				}
+				Ray left = new Ray(this.transform.position, Vector3.right*negative);
 				RaycastHit leftHit;
 				if(Physics.Raycast(left, out leftHit) == true){
-					if(leftHit.collider.tag == "tree" && leftHit.distance <= axeSwingDistance){
-						leftHit.collider.gameObject.GetComponent<Tree>().cutted(leftHit.point);
+					Debug.DrawLine(this.transform.position, leftHit.point, Color.red);
+					if(leftHit.distance <= axeSwingDistance){
+						leftHit.collider.gameObject.GetComponent<Trunk>().cutted(leftHit.point);
 					}
 				}
 			}
@@ -204,6 +220,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 		return false;
 	}
 	
+	
 	void walk(){
 		
 	}
@@ -214,10 +231,12 @@ public class Character : MonoBehaviour, controllable, moveable {
 		
 	}
 	
+	// MOVE the character in a direction
 	public void translate(float x, float y){
 		mover.Move (x, y, this);
 	}
 	
+	// COLLIDER with something else, a monster maybe?
 	public void OnTriggerEnter(Collider collider){
 		if(collider.tag == "monster" && this.tag == "player"){
 			Debug.Log ("OUCH!!!");
@@ -225,6 +244,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 		}
 	}
 	
+	// indicates if the Cahracter is in the AIR or not.
 	public bool isOnAir(){
 		float width = ((CharacterController)this.collider).radius*2f*this.transform.localScale.x;
 		float height = ((CharacterController)this.collider).radius*2f*this.transform.localScale.z;
@@ -265,13 +285,7 @@ public class Character : MonoBehaviour, controllable, moveable {
 		return true;
 	}
 	
-	// SPRITE VARIABLES
-	public int tilesX  = 3;
-	public int tilesY = 3;
-	float previousTime;
-	float aniSpeed = 1.5f;
-	bool resetIdx = false;
-	
+	// this will check the state and apply an image to the character depending on the situation
 	private void setSpriteImage(){
 		float currentTime = Time.time;
 		int idx = (int)((currentTime-previousTime)*aniSpeed);

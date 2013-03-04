@@ -3,16 +3,21 @@ using System.Collections;
 
 public static class mover{
 	
-	//void Start(){}
-	
-	//void Update(){}
-	
-	public static float distance = 0.0001f;
-	
+	public static float distance = 0.0001f; // a very small distance that will separate objects
 	private static Vector3 positionOfObject;
-	private static bool diagonal = false;
+	private static bool diagonal = false; // is the object the Character is current standing on a slope?
 	
+	// move an object using some rules
 	static public void Move(float xaxis, float yaxis, Component theObject){
+		/*how this proceeds:
+		 * - Create lasers(Ray s) in the direction the character is moving
+		 * - if the distance of the laser is smaller than the desired movement:
+		 * 	- Only move the distance of the laser
+		 * - else:
+		 * 	- You're good to go
+		 * */
+		
+		
 		float negative;
 		if(xaxis < 0){
 			negative = -1.0f;
@@ -47,7 +52,7 @@ public static class mover{
 		RaycastHit hitx2;
 
 		if(Physics.Raycast(rayx1, out hitx1) == true){
-			Debug.DrawLine(rayx1.origin, hitx1.point);
+			//Debug.DrawLine(rayx1.origin, hitx1.point);
 			if(hitx1.distance < distance + negative*xaxis && hitx1.collider.tag == "solid"){
 				xaxis = hitx1.distance - distance;
 				//xaxis = (float)(xaxis - (width /2));
@@ -101,6 +106,7 @@ public static class mover{
 			}
 		}
 		
+		//apply everything
 		Vector3 movement = new Vector3(xaxis, yaxis, 0.0f);
 		CharacterController player = theObject.GetComponent<CharacterController>();
 		player.Move(movement);
